@@ -14,14 +14,6 @@ from text import sequence_to_text
 from util import audio, infolog, plot, ValueWindow
 log = infolog.log
 
-
-def get_git_commit():
-  subprocess.check_output(['git', 'diff-index', '--quiet', 'HEAD'])   # Verify client is clean
-  commit = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode().strip()[:10]
-  log('Git commit: %s' % commit)
-  return commit
-
-
 def add_stats(model):
   with tf.variable_scope('stats') as scope:
     tf.summary.histogram('linear_outputs', model.linear_outputs)
@@ -36,7 +28,6 @@ def add_stats(model):
     tf.summary.histogram('gradient_norm', gradient_norms)
     tf.summary.scalar('max_gradient_norm', tf.reduce_max(gradient_norms))
     return tf.summary.merge_all()
-
 
 def time_string():
   return datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -80,9 +71,9 @@ def train(log_dir, args):
         # Restore from a checkpoint if the user requested it.
         restore_path = '%s-%d' % (checkpoint_path, args.restore_step)
         saver.restore(sess, restore_path)
-        log('Resuming from checkpoint: %s at commit: %s' % (restore_path, commit), slack=True)
+        log('Resuming from checkpoint: %s ' % (restore_path), slack=True)
       else:
-        log('Starting new training run at commit: %s' % commit, slack=True)
+        log('Starting new training run')
 
       feeder.start_in_session(sess)
 

@@ -1,6 +1,6 @@
 import inflect
 import re
-from numbers2wordsSi import converter 
+from .numbers2wordsSi import converter 
 
 
 _inflect = inflect.engine()
