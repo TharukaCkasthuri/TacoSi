@@ -2,6 +2,7 @@ import argparse
 import os
 from multiprocessing import cpu_count
 from tqdm import tqdm
+
 from datasets import pathnirvana
 from hparams import hparams
 
@@ -28,16 +29,11 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--base_dir', default=os.path.expanduser('/content/drive/MyDrive/TTS/sinhala/tacotron'))
   parser.add_argument('--output', default='training')
-  parser.add_argument('--dataset', required=True , choices=['blizzard', 'ljspeech' , 'pathnirvana'])
+  parser.add_argument('--dataset', required=True , choices=['pathnirvana'])
   parser.add_argument('--num_workers', type=int, default=cpu_count())
   args = parser.parse_args()
-  if args.dataset == 'blizzard':
-    preprocess_blizzard(args)
-  elif args.dataset == 'ljspeech':
-    preprocess_ljspeech(args)
-  elif args.dataset == 'pathnirvana':
+  if args.dataset == 'pathnirvana':
     preprocess_pathnirvana(args)
-
 
 if __name__ == "__main__":
   main()
