@@ -2,16 +2,9 @@ import argparse
 import os
 from multiprocessing import cpu_count
 from tqdm import tqdm
-from datasets import blizzard, ljspeech , pathnirvana
+from datasets import pathnirvana
 from hparams import hparams
 
-
-def preprocess_blizzard(args):
-  in_dir = os.path.join(args.base_dir, 'Blizzard2012')
-  out_dir = os.path.join(args.base_dir, args.output)
-  os.makedirs(out_dir, exist_ok=True)
-  metadata = blizzard.build_from_path(in_dir, out_dir, args.num_workers, tqdm=tqdm)
-  write_metadata(metadata, out_dir)
 
 def preprocess_pathnirvana(args):
   in_dir = os.path.join(args.base_dir, 'PathNirvanaSinhala2022')
@@ -19,14 +12,6 @@ def preprocess_pathnirvana(args):
   os.makedirs(out_dir, exist_ok=True)
   metadata = pathnirvana.build_from_path(in_dir, out_dir, args.num_workers, tqdm=tqdm)
   write_metadata(metadata, out_dir)
-
-def preprocess_ljspeech(args):
-  in_dir = os.path.join(args.base_dir, 'LJSpeech-1.1')
-  out_dir = os.path.join(args.base_dir, args.output)
-  os.makedirs(out_dir, exist_ok=True)
-  metadata = ljspeech.build_from_path(in_dir, out_dir, args.num_workers, tqdm=tqdm)
-  write_metadata(metadata, out_dir)
-
 
 def write_metadata(metadata, out_dir):
   with open(os.path.join(out_dir, 'train.txt'), 'w', encoding='utf-8') as f:
