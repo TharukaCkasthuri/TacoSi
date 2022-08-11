@@ -37,27 +37,27 @@ def _expand_dollars(m):
     return 'ඩොලර් බිංදුව'
 
 
-  def _expand_rupees(m):
-    match = m.group(1)
-    parts = match.split('.')
-    print(parts)
-    if len(parts) > 2:
-      return "රුපියල්" + match  # Unexpected format
-    rupees = int(parts[0]) if parts[0] else 0
-    cents = int(parts[1]) if len(parts) > 1 and parts[1] else 0
-    default = "යි"
-    if rupees and cents:
-      rupee_unit = 'රුපියල්'
-      cent_unit = 'සත'
-      return '%s %s %s %s %s' % (rupee_unit, rupees,default,cent_unit, cents)
-    elif rupees:
-      rupee_unit = 'රුපියල්'
-      return '%s %s' % (rupee_unit,rupees)
-    elif cents:
-      cent_unit = 'සත' if cents == 1 else 'සත'
-      return '%s %s' % (cent_unit,cents)
-    else:
-      return 'රුපියල් බින්දුවයි'
+def _expand_rupees(m):
+  match = m.group(1)
+  parts = match.split('.')
+  print(parts)
+  if len(parts) > 2:
+    return "රුපියල්" + match  # Unexpected format
+  rupees = int(parts[0]) if parts[0] else 0
+  cents = int(parts[1]) if len(parts) > 1 and parts[1] else 0
+  default = "යි"
+  if rupees and cents:
+    rupee_unit = 'රුපියල්'
+    cent_unit = 'සත'
+    return '%s %s %s %s %s' % (rupee_unit, rupees,default,cent_unit, cents)
+  elif rupees:
+    rupee_unit = 'රුපියල්'
+    return '%s %s' % (rupee_unit,rupees)
+  elif cents:
+    cent_unit = 'සත' if cents == 1 else 'සත'
+    return '%s %s' % (cent_unit,cents)
+  else:
+    return 'රුපියල් බින්දුවයි'
 
 def _expand_number(m):
   num = str(m.group(0))
