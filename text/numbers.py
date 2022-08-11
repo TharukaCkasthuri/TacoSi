@@ -1,9 +1,6 @@
-import inflect
 import re
 from .numbers2wordsSi import converter 
 
-
-_inflect = inflect.engine()
 _comma_number_re = re.compile(r'([0-9][0-9\,]+[0-9])')
 _decimal_number_re = re.compile(r'([0-9]+\.[0-9]+)')
 _rupees_re = re.compile(r'රු.([0-9\.\,]*[0-9]+)')
@@ -64,10 +61,10 @@ def _expand_number(m):
   return converter(num)
 
 def normalize_numbers(text):
-  text = re.sub(_comma_number_re, _remove_commas, text)
-  text = re.sub(_pounds_re, r'\1 පවුම්', text)
-  text = re.sub(_dollars_re, _expand_dollars, text)
+  #text = re.sub(_comma_number_re, _remove_commas, text)
   text = re.sub(_rupees_re, _expand_rupees, text)
+  text = re.sub(_dollars_re, _expand_dollars, text)
+  text = re.sub(_pounds_re, r'\1 පවුම්', text)
   text = re.sub(_decimal_number_re, _expand_decimal_point, text)
   text = re.sub(_number_re, _expand_number, text)
   return text
