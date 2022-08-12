@@ -48,19 +48,6 @@ class DataFeeder(threading.Thread):
     self.mel_targets.set_shape(self._placeholders[2].shape)
     self.linear_targets.set_shape(self._placeholders[3].shape)
 
-    # Load CMUDict: If enabled, this will randomly substitute some words in the training data with
-    # their ARPABet equivalents, which will allow you to also pass ARPABet to the model for
-    # synthesis (useful for proper nouns, etc.)
-    if hparams.use_cmudict:
-      cmudict_path = os.path.join(self._datadir, 'cmudict-0.7b')
-      if not os.path.isfile(cmudict_path):
-        raise Exception('If use_cmudict=True, you must download ' +
-          'http://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/cmudict-0.7b to %s'  % cmudict_path)
-      self._cmudict = cmudict.CMUDict(cmudict_path, keep_ambiguous=False)
-      log('Loaded CMUDict with %d unambiguous entries' % len(self._cmudict))
-    else:
-      self._cmudict = None
-
 
   def start_in_session(self, session):
     self._session = session
@@ -109,11 +96,6 @@ class DataFeeder(threading.Thread):
     linear_target = np.load(os.path.join(self._datadir, meta[0]))
     mel_target = np.load(os.path.join(self._datadir, meta[1]))
     return (input_data, mel_target, linear_target, len(linear_target))
-
-
-  def _maybe_get_arpabet(self, word):
-    arpabet = self._cmudict.lookup(word)
-    return '{%s}' % arpabet[0] if arpabet is not None and random.random() < 0.5 else word
 
 
 def _prepare_batch(batch, outputs_per_step):
