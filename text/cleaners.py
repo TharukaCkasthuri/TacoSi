@@ -6,11 +6,11 @@ from .numbers import normalize_numbers
 _whitespace_re = re.compile(r'\s+')
 
 # List of (regular expression, replacement) pairs for abbreviations:
-_abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in [
-  ('පෙ.ව.', 'පෙරවරු'),
-  ('ප.ව.', 'පස්වරු'),
-  ('බු.ව.', 'බුද්ධ වර්ෂ'),
-  ('ක්‍රි.ව.','ක්‍රිස්තු වර්ෂ')
+_abbreviations = [(re.compile('\%s.' % x[0]), x[1]) for x in [
+  ('පෙ.ව.', 'පෙරවරු '),
+  ('ප.ව.', 'පස්වරු '),
+  ('බු.ව.', 'බුද්ධ වර්ෂ '),
+  ('ක්‍රි.ව.','ක්‍රිස්තු වර්ෂ ')
 ]]
 
 def expand_abbreviations(text):

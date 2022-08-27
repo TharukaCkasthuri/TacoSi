@@ -8,15 +8,12 @@ from .modules import encoder_cbhg, post_cbhg, prenet
 from .rnn_wrappers import DecoderPrenetWrapper, ConcatOutputAndAttentionWrapper
 
 
-
 class Tacotron():
   def __init__(self, hparams):
     self._hparams = hparams
 
-
   def initialize(self, inputs, input_lengths, mel_targets=None, linear_targets=None):
     '''Initializes the model for inference.
-
     Sets "mel_outputs", "linear_outputs", and "alignments" fields.
 
     Args:
@@ -110,7 +107,6 @@ class Tacotron():
       log('  postnet out:             %d' % post_outputs.shape[-1])
       log('  linear out:              %d' % linear_outputs.shape[-1])
 
-
   def add_loss(self):
     '''Adds loss to the model. Sets "loss" field. initialize must have been called.'''
     with tf.variable_scope('loss') as scope:
@@ -121,7 +117,6 @@ class Tacotron():
       n_priority_freq = int(3000 / (hp.sample_rate * 0.5) * hp.num_freq)
       self.linear_loss = 0.5 * tf.reduce_mean(l1) + 0.5 * tf.reduce_mean(l1[:,:,0:n_priority_freq])
       self.loss = self.mel_loss + self.linear_loss
-
 
   def add_optimizer(self, global_step):
     '''Adds optimizer. Sets "gradients" and "optimize" fields. add_loss must have been called.
@@ -145,7 +140,6 @@ class Tacotron():
       with tf.control_dependencies(tf.get_collection(tf.GraphKeys.UPDATE_OPS)):
         self.optimize = optimizer.apply_gradients(zip(clipped_gradients, variables),
           global_step=global_step)
-
 
 def _learning_rate_decay(init_lr, global_step):
   # Noam scheme from tensor2tensor:

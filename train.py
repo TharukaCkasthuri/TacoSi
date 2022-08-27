@@ -32,7 +32,6 @@ def add_stats(model):
 def time_string():
   return datetime.now().strftime('%Y-%m-%d %H:%M')
 
-
 def train(log_dir, args):
   checkpoint_path = os.path.join(log_dir, 'model.ckpt')
   input_path = os.path.join(args.base_dir, args.input)
@@ -111,7 +110,6 @@ def train(log_dir, args):
       traceback.print_exc()
       coord.request_stop(e)
 
-
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--base_dir', default=os.path.expanduser('/'))
@@ -134,7 +132,6 @@ def main():
   os.makedirs(log_dir, exist_ok=True)
   hparams.parse(args.hparams)
   train(log_dir, args)
-
 
 if __name__ == '__main__':
   main()

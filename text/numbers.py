@@ -37,7 +37,6 @@ def _expand_dollars(m):
 def _expand_rupees(m):
   match = m.group(1)
   parts = match.split('.')
-  print(parts)
   if len(parts) > 2:
     return "රුපියල්" + match  # Unexpected format
   rupees = int(parts[0]) if parts[0] else 0
@@ -54,14 +53,14 @@ def _expand_rupees(m):
     cent_unit = 'සත' if cents == 1 else 'සත'
     return '%s %s' % (cent_unit,cents)
   else:
-    return 'රුපියල් බින්දුවයි'
+    return 'රුපියල් බින්දුව'
 
 def _expand_number(m):
   num = str(m.group(0))
   return converter(num)
 
 def normalize_numbers(text):
-  #text = re.sub(_comma_number_re, _remove_commas, text)
+  text = re.sub(_comma_number_re, _remove_commas, text)
   text = re.sub(_rupees_re, _expand_rupees, text)
   text = re.sub(_dollars_re, _expand_dollars, text)
   text = re.sub(_pounds_re, r'\1 පවුම්', text)

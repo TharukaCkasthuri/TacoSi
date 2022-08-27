@@ -18,12 +18,6 @@ def test_normalize_numbers():
   assert normalize_numbers('6.4 sec') == 'six point four sec'
 
 
-def test_normalize_ordinals():
-  assert normalize_numbers('1st') == 'first'
-  assert normalize_numbers('2nd') == 'second'
-  assert normalize_numbers('9th') == 'ninth'
-  assert normalize_numbers('243rd place') == 'two hundred and forty-third place'
-
 
 def test_normalize_dates():
   assert normalize_numbers('1400') == 'fourteen hundred'
