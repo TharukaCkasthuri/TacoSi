@@ -9,13 +9,14 @@ def build_from_path(in_dir, out_dir, num_workers=1, tqdm=lambda x: x):
   '''Preprocesses the Path Nirvana Sinhala dataset from a given input path into a given output directory.
 
     Args:
-      in_dir: The directory where you have downloaded the PN Sinhala dataset
-      out_dir: The directory to write the output into
-      num_workers: Optional number of worker processes to parallelize across
-      tqdm: You can optionally pass tqdm to get a nice progress bar
+
+    in_dir: The directory where you have downloaded the PN Sinhala dataset
+    out_dir: The directory to write the output into
+    num_workers: Optional number of worker processes to parallelize across
+    tqdm: You can optionally pass tqdm to get a nice progress bar
 
     Returns:
-      A list of tuples describing the training examples. This should be written to train.txt
+    A list of tuples describing the training examples. This should be written to train.txt
   '''
 
   # We use ProcessPoolExecutor to parallelize across processes. This is just an optimization and you
@@ -40,13 +41,13 @@ def _process_utterance(out_dir, index, wav_path, text):
   to the train.txt file.
 
   Args:
-    out_dir: The directory to write the spectrograms into
-    index: The numeric index to use in the spectrogram filenames.
-    wav_path: Path to the audio file containing the speech input
-    text: The text spoken in the input audio file
+  out_dir: The directory to write the spectrograms into
+  index: The numeric index to use in the spectrogram filenames.
+  wav_path: Path to the audio file containing the speech input
+  text: The text spoken in the input audio file
 
   Returns:
-    A (spectrogram_filename, mel_filename, n_frames, text) tuple to write to train.txt
+  A (spectrogram_filename, mel_filename, n_frames, text) tuple to write to train.txt
   '''
 
   # Load the audio to a numpy array:
