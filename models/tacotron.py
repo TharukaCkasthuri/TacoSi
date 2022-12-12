@@ -9,6 +9,9 @@ from .rnn_wrappers import DecoderPrenetWrapper, ConcatOutputAndAttentionWrapper
 
 
 class Tacotron():
+  """
+  This class implements the tacotron architecture from the original tacotron paper.
+  """
   def __init__(self, hparams):
     self._hparams = hparams
 
