@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-from tensorflow.contrib.seq2seq import Helper
+from tensorflow_addons.seq2seq import TrainingSampler as Helper
 
 
 # Adapted from tf.contrib.seq2seq.GreedyEmbeddingHelper

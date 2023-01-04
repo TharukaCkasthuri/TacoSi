@@ -1,15 +1,15 @@
 import tensorflow as tf
-from tensorflow.contrib.rnn import GRUCell
+from tensorflow.compat.v1.rnn_cell import GRUCell
 
 
 def prenet(inputs, is_training, layer_sizes, scope=None):
     x = inputs
     drop_rate = 0.5 if is_training else 0.0
-    with tf.variable_scope(scope or 'prenet'):
+    with tf.compat.v1.variable_scope(scope or 'prenet'):
         for i, size in enumerate(layer_sizes):
-            dense = tf.layers.dense(
+            dense = tf.compat.v1.layers.dense(
                 x, units=size, activation=tf.nn.relu, name='dense_%d' % (i+1))
-            x = tf.layers.dropout(
+            x = tf.compat.v1.layers.dropout(
                 dense, rate=drop_rate, training=is_training, name='dropout_%d' % (i+1))
     return x
 
@@ -38,8 +38,8 @@ def post_cbhg(inputs, input_dim, is_training, depth):
 
 
 def cbhg(inputs, input_lengths, is_training, scope, K, projections, depth):
-    with tf.variable_scope(scope):
-        with tf.variable_scope('conv_bank'):
+    with tf.compat.v1.variable_scope(scope):
+        with tf.compat.v1.variable_scope('conv_bank'):
             # Convolution bank: concatenate on the last axis to stack channels from all convolutions
             conv_outputs = tf.concat(
                 [conv1d(inputs, k, 128, tf.nn.relu, is_training,
@@ -48,7 +48,7 @@ def cbhg(inputs, input_lengths, is_training, scope, K, projections, depth):
             )
 
         # Maxpooling:
-        maxpool_output = tf.layers.max_pooling1d(
+        maxpool_output = tf.compat.v1.layers.max_pooling1d(
             conv_outputs,
             pool_size=2,
             strides=1,
@@ -68,7 +68,8 @@ def cbhg(inputs, input_lengths, is_training, scope, K, projections, depth):
 
         # Handle dimensionality mismatch:
         if highway_input.shape[2] != half_depth:
-            highway_input = tf.layers.dense(highway_input, half_depth)
+            highway_input = tf.compat.v1.layers.dense(
+                highway_input, half_depth)
 
         # 4-layer HighwayNet:
         for i in range(4):
@@ -77,7 +78,7 @@ def cbhg(inputs, input_lengths, is_training, scope, K, projections, depth):
         rnn_input = highway_input
 
         # Bidirectional RNN
-        outputs, states = tf.nn.bidirectional_dynamic_rnn(
+        outputs, states = tf.compat.v1.nn.bidirectional_dynamic_rnn(
             GRUCell(half_depth),
             GRUCell(half_depth),
             rnn_input,
@@ -87,13 +88,13 @@ def cbhg(inputs, input_lengths, is_training, scope, K, projections, depth):
 
 
 def highwaynet(inputs, scope, depth):
-    with tf.variable_scope(scope):
-        H = tf.layers.dense(
+    with tf.compat.v1.variable_scope(scope):
+        H = tf.compat.v1.layers.dense(
             inputs,
             units=depth,
             activation=tf.nn.relu,
             name='H')
-        T = tf.layers.dense(
+        T = tf.compat.v1.layers.dense(
             inputs,
             units=depth,
             activation=tf.nn.sigmoid,
@@ -103,11 +104,11 @@ def highwaynet(inputs, scope, depth):
 
 
 def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
-    with tf.variable_scope(scope):
-        conv1d_output = tf.layers.conv1d(
+    with tf.compat.v1.variable_scope(scope):
+        conv1d_output = tf.compat.v1.layers.conv1d(
             inputs,
             filters=channels,
             kernel_size=kernel_size,
             activation=activation,
             padding='same')
-        return tf.layers.batch_normalization(conv1d_output, training=is_training)
+        return tf.compat.v1.layers.batch_normalization(conv1d_output, training=is_training)

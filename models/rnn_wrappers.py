@@ -1,6 +1,7 @@
+
 import numpy as np
 import tensorflow as tf
-from tensorflow.contrib.rnn import RNNCell
+from tensorflow.compat.v1.rnn_cell import RNNCell
 from .modules import prenet
 
 
@@ -27,7 +28,7 @@ class DecoderPrenetWrapper(RNNCell):
         return self._cell(prenet_out, state)
 
     def zero_state(self, batch_size, dtype):
-        return self._cell.zero_state(batch_size, dtype)
+        return self._cell.get_initial_state(batch_size, dtype)
 
 
 class ConcatOutputAndAttentionWrapper(RNNCell):
@@ -55,4 +56,4 @@ class ConcatOutputAndAttentionWrapper(RNNCell):
         return tf.concat([output, res_state.attention], axis=-1), res_state
 
     def zero_state(self, batch_size, dtype):
-        return self._cell.zero_state(batch_size, dtype)
+        return self._cell.get_initial_state(batch_size, dtype)
