@@ -9,8 +9,11 @@ migrations
 venv
 
 # General #
-*/logs-tacotron
-*/training
 *.wav
+
+PathNirvanaSinhala2022/
+training/
+logs-tacotron
+
 
 
