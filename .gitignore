@@ -1,0 +1,16 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+migrations
+venv
+
+# General #
+*/logs-tacotron
+*/training
+*.wav
+
+
